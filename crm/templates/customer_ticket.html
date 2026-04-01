@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Raise Support Ticket</h2>
+  <form method="post" enctype="multipart/form-data" class="form-grid">
+    <label>Product</label>
+    <select name="product_id" required>
+      {% for product in products %}
+      <option value="{{ product.id }}">{{ product.name }}</option>
+      {% endfor %}
+    </select>
+    <label>Issue Description</label>
+    <textarea name="issue" rows="3" required></textarea>
+    <label>Payment Proof (Upload Image)</label>
+    <input type="file" name="payment_proof" accept="image/*" required />
+    <button type="submit" class="button-primary">Submit Ticket</button>
+  </form>
+</div>
+{% endblock %}

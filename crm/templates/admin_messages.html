@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Admin Chat</h2>
+  <div class="user-list">
+    {% for customer in customers %}
+    <div class="user-card" onclick="viewMessages({{ customer.id }}, '{{ customer.name }}')">
+      {{ customer.name }} ({{ customer.email }})
+    </div>
+    {% endfor %}
+  </div>
+  <div id="messageContainer" style="display:none;">
+    <h3 id="chatTitle"></h3>
+    <div class="message-list" id="messageList"></div>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="customer_id" id="customerId" />
+      <label>Select Role</label>
+      <select name="role" required>
+        <option value="admin">Admin</option>
+        <option value="customer">Customer</option>
+      </select>
+      <label>Admin Message</label>
+      <textarea name="content" rows="3" required></textarea>
+      <button type="submit" class="button-primary">Send</button>
+    </form>
+  </div>
+</div>
+<div class="notification" id="notification">New message from user!</div>
+<script>
+function viewMessages(customerId, name) {
+  document.getElementById('chatTitle').innerText = 'Chat with ' + name;
+  document.getElementById('customerId').value = customerId;
+  document.getElementById('messageContainer').style.display = 'block';
+  fetch('/admin/messages/' + customerId)
+    .then(response => response.json())
+    .then(data => {
+      const list = document.getElementById('messageList');
+      list.innerHTML = '';
+      if (data.messages && data.messages.length > 0) {
+        data.messages.forEach(msg => {
+          const div = document.createElement('div');
+          div.className = msg.sender_name === name ? 'message from-you' : 'message from-admin';
+          div.innerHTML = `<div class="message-text">${msg.content}</div><div class="message-meta"><strong>${msg.sender_name}</strong> | ${msg.created_at}</div>`;
+          list.appendChild(div);
+        });
+      } else {
+        list.innerHTML = '<p style="color:#7a8c9e;text-align:center;padding:20px;">No messages yet</p>';
+      }
+    })
+    .catch(err => console.error('Error fetching messages:', err));
+}
+function checkNotifications() {
+  fetch('/admin/notifications')
+    .then(response => response.json())
+    .then(data => {
+      if (data.new) {
+        document.getElementById('notification').style.display = 'block';
+        setTimeout(() => document.getElementById('notification').style.display = 'none', 5000);
+      }
+    });
+}
+setInterval(checkNotifications, 10000);
+</script>
+{% endblock %}

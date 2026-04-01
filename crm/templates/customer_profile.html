@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Profile</h2>
+  <form method="post" action="{{ url_for('customer_profile_update') }}" class="form-grid">
+    <label>Name</label>
+    <input name="name" value="{{ user.name }}" required />
+    <label>Phone</label>
+    <input name="phone" value="{{ user.phone or '' }}" />
+    <label>Age</label>
+    <input name="age" value="{{ user.age or '' }}" type="number" />
+    <label>Gender</label>
+    <input name="gender" value="{{ user.gender or '' }}" />
+    <label>Address</label>
+    <input name="address" value="{{ user.address or '' }}" />
+    <label>Work</label>
+    <input name="work" value="{{ user.work or '' }}" />
+    <label>Company</label>
+    <input name="company" value="{{ user.company or 'TechX Nologoe' }}" readonly />
+    <button type="submit" class="button-primary">Update Profile</button>
+  </form>
+</div>
+{% endblock %}

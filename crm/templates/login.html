@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="login-card">
+  <h2>Login to CRM Portal</h2>
+  <form method="post" action="{{ url_for('do_login') }}" class="form-grid">
+    <label>Email</label>
+    <input type="email" name="email" required />
+    <label>Password</label>
+    <input type="password" name="password" required />
+    <label>CAPTCHA: What is {{ num1 }} + {{ num2 }}?</label>
+    <input name="captcha" type="number" required />
+    <input type="hidden" name="num1" value="{{ num1 }}" />
+    <input type="hidden" name="num2" value="{{ num2 }}" />
+    <button type="submit" class="button-primary">Login</button>
+  </form>
+  <p>Need account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+</div>
+{% endblock %}

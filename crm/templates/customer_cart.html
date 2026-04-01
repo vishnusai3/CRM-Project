@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Cart</h2>
+  {% if items %}
+  <table class="table-list">
+    <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>${{ item.product.price }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>${{ item.quantity * item.product.price }}</td>
+      <td><a href="{{ url_for('remove_cart_item', item_id=item.id) }}" class="button small">Remove</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  <div class="checkout-section">
+    <strong>Total: ${{ total }}</strong>
+    <form method="post" action="{{ url_for('checkout') }}">
+      <button type="submit" class="button-primary">Buy Now</button>
+    </form>
+  </div>
+  {% else %}
+  <p>No items in cart yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

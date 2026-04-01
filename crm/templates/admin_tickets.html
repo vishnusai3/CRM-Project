@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Support Tickets</h2>
+  <table class="table-list">
+    <tr><th>ID</th><th>Customer</th><th>Product</th><th>Issue</th><th>Payment Proof</th><th>Status</th></tr>
+    {% for ticket in tickets %}
+    <tr>
+      <td>{{ ticket.id }}</td>
+      <td>{{ ticket.customer.name }}</td>
+      <td>{{ ticket.product.name }}</td>
+      <td>{{ ticket.issue }}</td>
+      <td>
+        {% if ticket.payment_proof %}
+        <a href="{{ url_for('static', filename='uploads/' + ticket.payment_proof) }}" target="_blank">
+          <img src="{{ url_for('static', filename='uploads/' + ticket.payment_proof) }}" alt="Payment Proof" style="max-width:100px; max-height:100px;" />
+        </a>
+        {% else %}
+        No proof uploaded
+        {% endif %}
+      </td>
+      <td>{{ ticket.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

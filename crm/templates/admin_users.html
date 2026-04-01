@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card">
+  <h2>Customers</h2>
+  <table class="table-list">
+    <tr><th>Name</th><th>Email</th><th>Status</th><th>Update Status</th></tr>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.status }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_user_status', user_id=user.id) }}" class="status-form">
+          <select name="status">
+            <option value="lead" {% if user.status=='lead' %}selected{% endif %}>Lead</option>
+            <option value="customer" {% if user.status=='customer' %}selected{% endif %}>Customer</option>
+            <option value="converted" {% if user.status=='converted' %}selected{% endif %}>Converted</option>
+            <option value="lost" {% if user.status=='lost' %}selected{% endif %}>Lost</option>
+          </select>
+          <button class="button">Save</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

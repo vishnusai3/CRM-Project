@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="top-row">
+  <div>
+    <h2>Customer Dashboard</h2>
+    <p style="margin-top:4px;color:#2f4f76;">Company: {{ session.get('company', 'TechX Nologoe') }}</p>
+  </div>
+  <form class="search-form" method="get" action="{{ url_for('customer_dashboard') }}">
+    <input name="q" placeholder="Search products" value="{{ query }}" />
+    <button type="submit">Search</button>
+  </form>
+</div>
+<div class="grid-3">
+  {% for product in products %}
+  <div class="card product-card">
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <p><strong>Company:</strong> {{ product.company or 'TechX Nologoe' }}</p>
+    <p class="price">${{ product.price }}</p>
+    <a class="button" href="{{ url_for('add_to_cart', product_id=product.id) }}">Add to cart</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

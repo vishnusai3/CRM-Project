@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% if session.get('role') == 'admin' %}
+    <script>
+    function checkNewMessages() {
+      fetch('/admin/notifications')
+        .then(response => response.json())
+        .then(data => {
+          const badge = document.getElementById('message-notification');
+          if (data.new) {
+            badge.style.display = 'inline';
+            badge.textContent = '!';
+          } else {
+            badge.style.display = 'none';
+          }
+        })
+        .catch(err => console.error('Error checking notifications:', err));
+    }
+    // Check for new messages every 30 seconds
+    setInterval(checkNewMessages, 30000);
+    // Check immediately on page load
+    checkNewMessages();
+    </script>
+    {% endif %}
+    <title>TechX CRM Pro - Professional CRM Solution</title>
+  </head>
+  <body>
+    <header class="navbar">
+    <div class="brand">
+        <span class="icon-logo">🚀</span> TechX CRM Pro
+      </div>
+      <nav class="nav-links">
+        {% if session.get('user_id') and session.get('role') == 'customer' %}
+        <a href="{{ url_for('customer_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="{{ url_for('customer_cart') }}"><i class="fas fa-shopping-cart"></i> Cart</a>
+        <a href="{{ url_for('customer_orders') }}"><i class="fas fa-box"></i> Orders</a>
+        <a href="{{ url_for('customer_profile') }}"><i class="fas fa-user"></i> Profile</a>
+        <a href="{{ url_for('customer_messages') }}"><i class="fas fa-envelope"></i> Messages</a>
+        <a href="{{ url_for('customer_ticket') }}"><i class="fas fa-life-ring"></i> Support</a>
+        {% elif session.get('user_id') and session.get('role') == 'admin' %}
+        <a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="{{ url_for('admin_products') }}"><i class="fas fa-boxes"></i> Products</a>
+        <a href="{{ url_for('admin_users') }}"><i class="fas fa-users"></i> Users</a>
+        <a href="{{ url_for('admin_orders') }}"><i class="fas fa-dollar-sign"></i> Sales</a>
+        <a href="{{ url_for('admin_tickets') }}"><i class="fas fa-ticket-alt"></i> Tickets</a>
+        <a href="{{ url_for('admin_messages') }}"><i class="fas fa-comments"></i> Chat <span id="message-notification" class="notification-badge" style="display:none;"></span></a>
+        {% endif %}
+        {% if session.get('user_id') %}
+        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+      </nav>
+    </header>
+    <main class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
