@@ -88,7 +88,7 @@ Allows customers to view and update their profile information including name, ph
 - **Registration**: Users can sign up as Customer or Admin with name, email, phone, age, gender, address, work, and contact information
 - **Login**: Secure login with email and password verification using hashing
 - **CAPTCHA**: Math-based CAPTCHA prevents automated attacks
-- **Session Management**: Flask sessions maintain user login state across requests
+- **Session Management**: Flask sessions maintain user login state across requets
 - **Role-Based Access Control**: Different features available based on user role (Admin/Customer)
 
 ### **Admin Dashboard Module**
