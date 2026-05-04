@@ -219,7 +219,7 @@ Message
 ├── receiver_id (Foreign Key) → User.id, Optional
 ├── role - String(20), Not Null (customer/admin)
 ├── content - Text, Not Null
-└── created_at - DateTime, Not Null
+└── created_at - DateTime, Not Null.
 ```
 
 ### **Tickets Table**
